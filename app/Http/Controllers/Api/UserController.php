@@ -49,6 +49,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        if(!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         $user->update($request->all());
 
         return response()->json($user);
@@ -77,6 +81,10 @@ class UserController extends Controller
     public function destroy(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
+        if (!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
         $user->delete();
 

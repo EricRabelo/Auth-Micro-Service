@@ -41,7 +41,7 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function test_authentication_with_invalid_credentials()
+    public function test_login_with_invalid_credentials()
     {
         $faker = Faker::create();
 
@@ -155,11 +155,13 @@ class AuthTest extends TestCase
             'password' => $password,
         ]);
 
+        $tokens = $user->tokens();
+        $this->assertGreaterThan(0, $tokens->count());
+
         $response = $this->actingAs($user)->deleteJson('/api/logout');
+        $response->assertStatus(200);
 
         $tokens = $user->tokens();
-
-        $response->assertStatus(200);
         $this->assertEquals(0, $tokens->count());
     }
 
