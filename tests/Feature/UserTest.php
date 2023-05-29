@@ -90,7 +90,7 @@ class UserTest extends TestCase
         $user = User::factory()->create([
             'name' => $faker->name,
             'email' => $faker->email,
-            'is_admin' => false,
+            'admin' => false,
             'registration' => getRandomRegistration(),
             'password' => bcrypt($faker->password),
         ]);
@@ -168,7 +168,7 @@ class UserTest extends TestCase
         $user = User::factory()->create([
             'name' => $faker->name,
             'email' => $faker->email,
-            'is_admin' => false,
+            'admin' => false,
             'registration' => getRandomRegistration(),
             'password' => bcrypt($faker->password),
         ]);

@@ -22,7 +22,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'is_admin' => fake()->boolean(),
+            'admin' => fake()->boolean(),
             'registration' => getRandomRegistration(),
             'password' => bcrypt(fake()->password()),
             'remember_token' => Str::random(10),

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use Detection\MobileDetect;
+use Laravel\Sanctum\Sanctum;
 
 class AuthController extends Controller
 {
@@ -41,7 +42,13 @@ class AuthController extends Controller
      */
     public function me(Request $request)
     {
-        return $request->user();
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Invalid token'], 401);
+        }
+
+        return $user;
     }
 
     /**

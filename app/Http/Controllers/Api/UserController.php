@@ -33,7 +33,7 @@ class UserController extends Controller
         $request->merge([
             'password' => bcrypt($request->password)
         ]);
-        $user = User::create($request->all());
+        $user = User::factory()->create($request->all());
         $token = $user->createToken(getDevice());
 
         return ['user' => $user->toArray(), 'access_token' => $token->toArray()];
