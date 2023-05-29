@@ -60,5 +60,18 @@ php artisan key:generate
 ```
 
 
+Rode as migrations
+```sh
+php artisan migrate
+```
+
+
+Para rodar os testes
+```sh
+php artisan test
+```
+
+
+
 Acesse o projeto
 [http://localhost:8989](http://localhost:8989)
