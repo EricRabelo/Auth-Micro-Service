@@ -4,13 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-
 use App\Http\Controllers\Controller;
-
 use App\Models\User;
-use Detection\MobileDetect;
-use Laravel\Sanctum\Sanctum;
 
 class AuthController extends Controller
 {

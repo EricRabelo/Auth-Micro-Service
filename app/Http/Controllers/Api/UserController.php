@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -36,9 +34,11 @@ class UserController extends Controller
                 'password' => bcrypt($request->password)
             ]);
             $user = User::create($request->all());
-            $token = $user->createToken(getDevice());
 
-            return ['user' => $user->toArray(), 'access_token' => $token->toArray()];
+            // $token = $user->createToken(getDevice());
+            // return ['user' => $user->toArray(), 'access_token' => $token->toArray()];
+
+            return response()->json($user);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
