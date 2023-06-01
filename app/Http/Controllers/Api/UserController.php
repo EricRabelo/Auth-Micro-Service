@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -30,13 +31,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->merge([
-            'password' => bcrypt($request->password)
-        ]);
-        $user = User::factory()->create($request->all());
-        $token = $user->createToken(getDevice());
+        try {
+            $request->merge([
+                'password' => bcrypt($request->password)
+            ]);
+            $user = User::create($request->all());
+            $token = $user->createToken(getDevice());
 
-        return ['user' => $user->toArray(), 'access_token' => $token->toArray()];
+            return ['user' => $user->toArray(), 'access_token' => $token->toArray()];
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -47,15 +52,19 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        if(!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            if (!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            $user->update($request->all());
+
+            return response()->json($user);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $user->update($request->all());
-
-        return response()->json($user);
     }
 
     /**
@@ -80,14 +89,18 @@ class UserController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        if (!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            if (!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            $user->delete();
+
+            return response()->json($user);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $user->delete();
-
-        return response()->json($user);
     }
 }
