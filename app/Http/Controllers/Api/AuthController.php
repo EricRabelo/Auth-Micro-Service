@@ -24,8 +24,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
         $user->tokens()->delete();
-        $token = $user->createToken(getDevice());
-
+        $token = $user->createToken('');
         return $token;
     }
 
@@ -55,7 +54,7 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         $request->user()->tokens()->delete();
-        $token = $request->user()->createToken(getDevice());
+        $token = $request->user()->createToken('');
         return $token;
     }
 

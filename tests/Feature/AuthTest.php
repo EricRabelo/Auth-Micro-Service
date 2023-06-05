@@ -71,7 +71,7 @@ class AuthTest extends TestCase
             'password' => bcrypt($password),
         ]);
 
-        $response = $this->actingAs($user)->getJson('/api/user/me');
+        $response = $this->actingAs($user)->getJson('/api/me');
 
         $response->assertStatus(200);
         $response->assertJson(['email' => $email]);
@@ -84,7 +84,7 @@ class AuthTest extends TestCase
      */
     public function test_find_my_user_without_being_logged_in()
     {
-        $response = $this->getJson('/api/user/me');
+        $response = $this->getJson('/api/me');
 
         $response->assertStatus(401);
     }

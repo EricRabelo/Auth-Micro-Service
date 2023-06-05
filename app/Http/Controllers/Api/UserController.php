@@ -33,10 +33,8 @@ class UserController extends Controller
             $request->merge([
                 'password' => bcrypt($request->password)
             ]);
-            $user = User::create($request->all());
 
-            // $token = $user->createToken(getDevice());
-            // return ['user' => $user->toArray(), 'access_token' => $token->toArray()];
+            $user = User::create($request->all());
 
             return response()->json($user);
         } catch (\Exception $e) {
@@ -53,7 +51,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::find($id);
+
+            if(!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
 
             if (!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
@@ -76,7 +78,11 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+
+        if(!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
 
         return response()->json($user);
     }
@@ -90,7 +96,11 @@ class UserController extends Controller
     public function destroy(Request $request, $id)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::find($id);
+
+            if(!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
 
             if (!($request->user()->isAdmin() || $request->user()->id == $user->id)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
@@ -98,7 +108,7 @@ class UserController extends Controller
 
             $user->delete();
 
-            return response()->json($user);
+            return response()->json(['message' => 'User deleted successfully']);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

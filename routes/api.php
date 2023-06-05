@@ -11,7 +11,7 @@ Route::post('/register', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
 
     //Auth routes
-    Route::get('/user/me', [AuthController::class, 'me']);
+    Route::get('/me', [AuthController::class, 'me']);
     Route::delete('/logout',  [AuthController::class, 'logout']);
     Route::get('/refresh-token', [AuthController::class, 'refreshToken']);
 

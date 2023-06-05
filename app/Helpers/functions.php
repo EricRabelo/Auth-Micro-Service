@@ -7,3 +7,10 @@ if (!function_exists('getStatusSupport')) {
         return SupportStatus::fromValue($status);
     }
 }
+
+if (!function_exists('getRandomRegistration')) {
+    function getRandomRegistration(): string {
+        $faker = Faker\Factory::create();
+        return $faker->unique()->numerify('##########');
+    }
+}
