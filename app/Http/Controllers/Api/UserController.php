@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
 
 class UserController extends Controller
@@ -27,7 +28,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
         try {
             $request->merge([
